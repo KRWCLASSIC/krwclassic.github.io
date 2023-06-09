@@ -1,21 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Error 401</title>
-</head>
-<body>
-    <button onclick="sendData()">Main page.</button>
-
-    <script>
-        function sendData() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "send.php", true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({
-                ip: "<?php echo $_SERVER['REMOTE_ADDR']; ?>",
-                user_agent: navigator.userAgent
-            }));
-        }
-    </script>
-</body>
+    <form method="post" action="send_to_discord.php">
+      <input type="submit" value="Send data to Discord">
+    </form>
 </html>

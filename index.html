@@ -1,32 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body, html {
-  height: 100%;
-  margin: 0;
-}
-
-.bg {
-  background-image: url("space.jpg");
-  height: 100%; 
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-</style>
-<title>KRW CLASSIC</title>
-<link rel="stylesheet" type="text/css "href="style.css">
+    <title>Error 401</title>
 </head>
 <body>
-	<header>
-		<h1><center>KRW CLASSIC</center></h1>
-	</header>
-	<main>
-		<p><center>Narazie nic tu nie ma ale będzie pozdro.</center></p>
-	</main>
-  <div class="bg"></div>
-</body>
+    <button onclick="sendData()">Main page.</button>
 
+    <script>
+        function sendData() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "send.php", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                ip: "<?php echo $_SERVER['REMOTE_ADDR']; ?>",
+                user_agent: navigator.userAgent
+            }));
+        }
+    </script>
+</body>
 </html>
